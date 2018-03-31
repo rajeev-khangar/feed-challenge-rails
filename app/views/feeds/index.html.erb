@@ -1,15 +1,8 @@
-<div id="jsonData"></div>
-<script type="text/javascript">
-	$(document).ready(function(){
-    $.ajax({
-			url: '/feed',
-      method: 'GET',
-      success: function(res){
-        $("#jsonData").html(JSON.stringify(res))
-      },
-      error: function(res){
-        $("#jsonData").html(JSON.stringify(res))
-      }
-		})
-	})
-</script>
+<div id="feed"></div>
+<div class="spinner">
+  <div class="loader">
+    <%= image_tag("ajax-loader.gif") %>
+  </div>
+</div>
+
+<%= javascript_tag "loadFeeds()" %>

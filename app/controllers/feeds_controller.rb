@@ -1,7 +1,7 @@
 require "httparty"
 class FeedsController < ApplicationController
   
-  def index 
+  def index
     if request.xhr?
       feed = Feed.new    
       result = feed.call("activities")

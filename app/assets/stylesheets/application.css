@@ -13,3 +13,14 @@
  *= require_tree .
  *= require_self
  */
+
+.loader{
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.spinner{
+  width: 300px;
+  height: 300px;
+  display: none;
+}

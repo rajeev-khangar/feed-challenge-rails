@@ -16,4 +16,20 @@
 //= require activestorage
 //= require_tree 
 
-
+var loadFeeds = function(){
+  $(".spinner").show();
+  $.ajax({
+    url: '/feed',
+    method: 'GET',
+    success: function(res){
+      console.log(1)
+      $("#feed").html(JSON.stringify(res))
+      $(".spinner").hide();
+    },
+    error: function(res){
+      console.log(2)
+      $("#feed").html(JSON.stringify(res))
+      $(".spinner").hide();
+    }
+  })  
+}
