@@ -1,17 +1,20 @@
 require "httparty"
 class FeedsController < ApplicationController
+  
   def index 
-  	@result = HTTParty.get("https://feed-challenge-api.herokuapp.com/activities")
-    data = []
-    @result.parsed_response.each do |record|
-      if record["object"].split(":").first == "Post"
-        post = HTTParty.get("https://feed-challenge-api.herokuapp.com/posts/#{record["object"].split(":").last}")
-        data << {verb: record["verb"], content: post["content"], actor: record["actor"], description: record["actor"]+ " " + record["verb"] + " "+ post["content"]}
-      else
-      	share = HTTParty.get("https://feed-challenge-api.herokuapp.com/shares/#{record["object"].split(":").last}")
-        data << {verb: record["verb"], url: share["url"], actor: record["actor"], description: record["actor"] + " " + record["verb"] + " "+ share["url"]}
+    if request.xhr?
+      feed = Feed.new    
+      result = feed.call("activities")
+      data = []
+      result.parsed_response.each do |record|
+        data << if record["verb"] == "posted"
+          feed.post_data(record, "posts/#{record['object'].split(':').last}")
+        elsif record["verb"] == "shared" 
+          feed.share_data(record, "shares/#{record['object'].split(':').last}")
+        end
       end
+      render json: data.to_json
     end
-    render json: data.to_json
   end
+
 end
